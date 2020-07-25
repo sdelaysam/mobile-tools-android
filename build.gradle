@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-allopen'
+
+android {
+    compileSdkVersion compileSdk
+    buildToolsVersion buildTools
+
+    defaultConfig {
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
+
+allOpen {
+    annotation("org.sdelaysam.arch.OpenForTesting")
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    api "com.google.android.material:material:$material_version" // motion is buggy in versions after
+    api "androidx.recyclerview:recyclerview:1.2.0-alpha03"
+
+    api "com.github.sdelaysam.Conductor:conductor:ceb67040dd"
+
+    api "io.reactivex.rxjava2:rxjava:2.2.19"
+    api "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+    api "io.reactivex.rxjava2:rxandroid:2.1.1"
+    api 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
+
+    api "org.koin:koin-core:2.1.5"
+    api "org.koin:koin-android:2.1.5"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+}
